@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-alpine
+FROM openjdk:21-jdk
 EXPOSE 8443
 ARG JAR_FILE=target/*.jar
 ADD ${JAR_FILE} app.jar
