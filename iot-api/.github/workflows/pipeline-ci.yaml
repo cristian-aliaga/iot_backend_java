@@ -27,6 +27,7 @@ jobs:
             run: |
               mvn package test
             continue-on-error: true
+            working-directory: iot_backend_java/iot-api
     Analyze:
         name: SonarCloud Analyze
         runs-on: ubuntu-latest
@@ -63,6 +64,7 @@ jobs:
                     echo "Quality Gate failed: $STATUS"
                     exit 1
                   fi
+              working-directory: iot_backend_java/iot-api
             - name: Build and analyze
               env:
                 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -94,9 +96,11 @@ jobs:
           - name: Docker Build
             run: |
               docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/repo-image-$(git describe --tags):latest .
+            working-directory: iot_backend_java/iot-api
           - name: Docker Push
             run: |
               docker push ${{ secrets.DOCKERHUB_USERNAME }}/repo-image-$(git describe --tags):latest
+            working-directory: iot_backend_java/iot-api
     Deploy:
         name: Deploy Container
         needs: Build
@@ -112,3 +116,4 @@ jobs:
                     docker stop iot_backend_java || true
                     docker rm iot_backend_java || true
                     docker run -d --name iot_backend_java -p 8443:8443 cristianaliaga/repo-image-$(git describe --tags):latest
+              working-directory: iot_backend_java/iot-api
