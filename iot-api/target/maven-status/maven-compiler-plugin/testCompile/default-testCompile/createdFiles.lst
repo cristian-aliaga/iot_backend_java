@@ -1,5 +1,7 @@
 com\sensormanager\iot\controller\CompanyControllerTest.class
+com\sensormanager\iot\controller\LocationControllerTest.class
 com\sensormanager\iot\controller\UserRoleControllerTest.class
+com\sensormanager\iot\controller\SensorControllerTest.class
 com\sensormanager\iot\adapter\UserDataAdapterTest.class
 com\sensormanager\iot\controller\UserControllerTest.class
 com\sensormanager\iot\IotApiApplicationTests.class
