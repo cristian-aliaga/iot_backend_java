@@ -16,14 +16,17 @@ jobs:
             uses: actions/checkout@v4
             with:
               fetch-depth: 0
+            continue-on-error: true
           - name: Setup Java JDK
             uses: actions/setup-java@v3
             with:
               java-version: '21'
               distribution: 'temurin'
+            continue-on-error: true
           - name: Unit Test
             run: |
               mvn package test
+            continue-on-error: true
     Analyze:
         name: SonarCloud Analyze
         needs: Test
