@@ -29,7 +29,6 @@ jobs:
             continue-on-error: true
     Analyze:
         name: SonarCloud Analyze
-        needs: Test
         runs-on: ubuntu-latest
         steps:
             - name: Code Clone
