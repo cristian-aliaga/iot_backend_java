@@ -23,6 +23,7 @@ jobs:
               distribution: 'temurin'
           - name: Maven Clean Package
             run: mvn clean package
+            working-directory: iot-api
           - name: Unit Test
             run: |
               mvn package test
