@@ -1,27 +1,39 @@
 package com.sensormanager.iot.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.sensormanager.iot.dto.SensorDataDTO;
+import com.sensormanager.iot.dto.SensorJSONPackageDTO;
 import com.sensormanager.iot.service.SensorDataServiceImp;
 
+@MockitoSettings
+@AutoConfigureMockMvc
 class SensorDataControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Mock
     private SensorDataServiceImp sensorDataService;
@@ -30,30 +42,54 @@ class SensorDataControllerTest {
     private SensorDataController sensorDataController;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    /*@Test
-    void testGetAllSensorData() {
-        List<SensorDataDTO> mockData = Arrays.asList(new SensorDataDTO(), new SensorDataDTO());
-        when(sensorDataService.getAllSensorData()).thenReturn(mockData);
-        List<Long> sensorIds = new ArrayList();
-        sensorIds.add(Long.getLong("2"));
-        ResponseEntity<List<SensorDataDTO>> response = sensorDataController.getSensorData(sensorIds, Long.getLong("1743642108"), Long.getLong("17436421999"));
-        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
-        assertEquals(mockData, response.getBody());
-        verify(sensorDataService, times(1)).getAllSensorData();
+        mockMvc = MockMvcBuilders.standaloneSetup(sensorDataController).build();
     }
 
     @Test
-    void testCreateSensorData() {
-        SensorDataDTO inputData = new SensorDataDTO();
-        SensorDataDTO mockData = new SensorDataDTO();
-        when(sensorDataService.createSensorData(inputData)).thenReturn(mockData);
-        ResponseEntity<SensorDataDTO> response = sensorDataController.createSensorData(inputData);
-        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
-        assertEquals(mockData, response.getBody());
-        verify(sensorDataService, times(1)).createSensorData(inputData);
-    }*/
+    void testGetSensorDataReturnsOk() throws Exception {
+        List<SensorDataDTO> mockData = Arrays.asList(new SensorDataDTO(), new SensorDataDTO());
+        Mockito.when(sensorDataService.getSensorData(anyList(), anyLong(), anyLong())).thenReturn(mockData);
+
+        mockMvc.perform(get("/api/v1/sensordata")
+                .param("sensor_id", "1,2")
+                .param("from", "1633036800")
+                .param("to", "1633123200"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{},{}]"));
+    }
+
+    @Test
+    void testGetSensorDataReturnsNoContent() throws Exception {
+        Mockito.when(sensorDataService.getSensorData(anyList(), anyLong(), anyLong())).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/api/v1/sensordata")
+                .param("sensor_id", "1,2")
+                .param("from", "1633036800")
+                .param("to", "1633123200"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testCreateSensorDataReturnsCreated() throws Exception {
+        List<SensorDataDTO> mockData = Arrays.asList(new SensorDataDTO());
+        Mockito.when(sensorDataService.createSensorData(any(SensorJSONPackageDTO.class))).thenReturn(mockData);
+
+        mockMvc.perform(post("/api/v1/sensordata")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"someField\":\"someValue\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("[{}]"));
+    }
+
+    @Test
+    void testCreateSensorDataReturnsBadRequest() throws Exception {
+        Mockito.when(sensorDataService.createSensorData(any(SensorJSONPackageDTO.class))).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(post("/api/v1/sensordata")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"someField\":\"someValue\"}"))
+                .andExpect(status().isBadRequest());
+    }
 }
