@@ -440,9 +440,11 @@ INSERT INTO public.sensors (id, sensor_name, sensor_api_key, sensor_location, se
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_modified_at, user_expire_at, user_status, user_company) VALUES (3, 'Administrador', 'Compañia 3', 'admincompany3', '$2b$12$3a6TexEB23O5ShDvD50Sm.XhVqMQbhjmy.uEa4XaWSGKsaOo5S7Fi', 'root2@root.cl', 1743282966, 1743282967, 1774818966, true, 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_modified_at, user_expire_at, user_status, user_company) VALUES (5, 'Administrador', 'Compañia 4', 'admincompany4', '$2a$10$pqKRhI84ZU5D7TiZvseREeF/VKze4jFR4zjy7jgTpXSTceKvT2IdK', 'root3@root.cl', 1743300854, 1743300854, 1774836854, false, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_modified_at, user_expire_at, user_status, user_company) VALUES (1, 'Administrador', 'Sistema', 'root', '$2b$12$1Lrge8W7loZeOOv8SQ9/hewYe9SGXkKJRgfFb173dgnpC4Frjr3Gi', 'root@root.cl', 1743282814, 1743282814, 1774818814, true, 2) ON CONFLICT DO NOTHING;
+INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_expire_at, user_status, user_company) VALUES (3, 'Administrador', 'Compañia 3', 'admincompany3', '$2b$12$3a6TexEB23O5ShDvD50Sm.XhVqMQbhjmy.uEa4XaWSGKsaOo5S7Fi', 'root2@root.cl', 1743282966, 1774818966, true, 3) ON CONFLICT DO NOTHING;
+INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_expire_at, user_status, user_company) VALUES (5, 'Administrador', 'Compañia 4', 'admincompany4', '$2a$10$pqKRhI84ZU5D7TiZvseREeF/VKze4jFR4zjy7jgTpXSTceKvT2IdK', 'root3@root.cl', 1743300854, 1774836854, false, 4) ON CONFLICT DO NOTHING;
+INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_expire_at, user_status, user_company) VALUES (1, 'Administrador', 'Sistema', 'root', '$2b$12$1Lrge8W7loZeOOv8SQ9/hewYe9SGXkKJRgfFb173dgnpC4Frjr3Gi', 'root@root.cl', 1743282814, 1774818814, true, 2) ON CONFLICT DO NOTHING;
+INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_expire_at, user_status, user_company) VALUES (4, 'Administrador', 'Sistema', 'root', '$2a$12$Gy0UIF1e4.JFLsogToer6eXu0mxZC0k763qhZbl9YMIGWRqkYzpgW', 'root2@root2.cl', 1743282814, 1774818814, true, 2) ON CONFLICT DO NOTHING;
+INSERT INTO public.users (id, first_name, last_name, username, password, user_email, user_created_at, user_expire_at, user_status, user_company) VALUES (6, 'Administrador', 'Sistema', 'root2', '$2a$12$Gy0UIF1e4.JFLsogToer6eXu0mxZC0k763qhZbl9YMIGWRqkYzpgW', 'root3@root2.cl', 1743282814, 1774818814, true, 2) ON CONFLICT DO NOTHING;
 
 
 --
@@ -454,6 +456,8 @@ INSERT INTO public.users (id, first_name, last_name, username, password, user_em
 INSERT INTO public.users_roles (user_id, role_id) VALUES (1, 1) ON CONFLICT DO NOTHING;
 INSERT INTO public.users_roles (user_id, role_id) VALUES (3, 2) ON CONFLICT DO NOTHING;
 INSERT INTO public.users_roles (user_id, role_id) VALUES (5, 2) ON CONFLICT DO NOTHING;
+INSERT INTO public.users_roles (user_id, role_id) VALUES (4, 1) ON CONFLICT DO NOTHING;
+INSERT INTO public.users_roles (user_id, role_id) VALUES (6, 1) ON CONFLICT DO NOTHING;
 
 
 --
