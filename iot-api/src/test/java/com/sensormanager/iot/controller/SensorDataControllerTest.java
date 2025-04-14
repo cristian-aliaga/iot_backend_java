@@ -1,37 +1,27 @@
 package com.sensormanager.iot.controller;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import com.sensormanager.iot.dto.SensorJSONPackageDTO;
-import com.sensormanager.iot.dto.SensorDataDTO;
-import com.sensormanager.iot.service.SensorDataServiceImp;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
-import static org.mockito.Mockito.*;
+import com.sensormanager.iot.dto.SensorDataDTO;
+import com.sensormanager.iot.dto.SensorJSONPackageDTO;
+import com.sensormanager.iot.service.SensorDataServiceImp;
 
-@MockitoSettings
-@AutoConfigureMockMvc
 class SensorDataControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Mock
     private SensorDataServiceImp sensorDataService;
@@ -40,9 +30,8 @@ class SensorDataControllerTest {
     private SensorDataController sensorDataController;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(sensorDataController).build();
     }
 
     @Test
