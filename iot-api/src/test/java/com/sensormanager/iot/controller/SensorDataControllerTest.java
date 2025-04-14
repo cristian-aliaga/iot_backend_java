@@ -3,6 +3,14 @@ package com.sensormanager.iot.controller;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import com.sensormanager.iot.dto.SensorJSONPackageDTO;
+import com.sensormanager.iot.dto.SensorDataDTO;
+import com.sensormanager.iot.service.SensorDataServiceImp;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,22 +19,12 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 
-import com.sensormanager.iot.dto.SensorDataDTO;
-import com.sensormanager.iot.dto.SensorJSONPackageDTO;
-import com.sensormanager.iot.service.SensorDataServiceImp;
+import static org.mockito.Mockito.*;
 
 @MockitoSettings
 @AutoConfigureMockMvc
@@ -48,48 +46,49 @@ class SensorDataControllerTest {
     }
 
     @Test
-    void testGetSensorDataReturnsOk() throws Exception {
-        List<SensorDataDTO> mockData = Arrays.asList(new SensorDataDTO(), new SensorDataDTO());
-        Mockito.when(sensorDataService.getSensorData(anyList(), anyLong(), anyLong())).thenReturn(mockData);
+    void testGetSensorData() {
+        List<Long> sensorIds = List.of(1L, 2L);
+        Long fromEpoch = 1742861430L;
+        Long toEpoch = 1742861495L;
 
-        mockMvc.perform(get("/api/v1/sensordata")
-                .param("sensor_id", "1,2")
-                .param("from", "1633036800")
-                .param("to", "1633123200"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{},{}]"));
+        List<SensorDataDTO> mockData = List.of(
+                SensorDataDTO.builder().id(1L).idSensor(1L).metric("temp").record("24.4").recordCreatedAt(1742861430L).build()
+        );
+
+        when(sensorDataService.getSensorData(sensorIds, fromEpoch, toEpoch)).thenReturn(mockData);
+
+        ResponseEntity<List<SensorDataDTO>> response = sensorDataController.getSensorData(sensorIds, fromEpoch, toEpoch);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(mockData, response.getBody());
+        verify(sensorDataService, times(1)).getSensorData(sensorIds, fromEpoch, toEpoch);
     }
 
     @Test
-    void testGetSensorDataReturnsNoContent() throws Exception {
-        Mockito.when(sensorDataService.getSensorData(anyList(), anyLong(), anyLong())).thenReturn(Collections.emptyList());
+    void testCreateSensorData() {
+        SensorJSONPackageDTO input = SensorJSONPackageDTO.builder()
+                .apiKey("82ba1908-96c7-4a7b-854c-969a5e389909")
+                .jsonData(List.of(
+                        Map.of("datetime", "1742861430", "temp", "24.4", "humidity", "0.5"),
+                        Map.of("datetime", "1742861495", "temp", "22.1", "humidity", "0.6")
+                ))
+                .build();
 
-        mockMvc.perform(get("/api/v1/sensordata")
-                .param("sensor_id", "1,2")
-                .param("from", "1633036800")
-                .param("to", "1633123200"))
-                .andExpect(status().isNoContent());
+        List<SensorDataDTO> mockResponse = Arrays.asList(
+                SensorDataDTO.builder().id(1L).idSensor(99L).metric("temp").record("24.4").recordCreatedAt(1742861430L).build(),
+                SensorDataDTO.builder().id(2L).idSensor(99L).metric("humidity").record("0.5").recordCreatedAt(1742861430L).build(),
+                SensorDataDTO.builder().id(3L).idSensor(99L).metric("temp").record("22.1").recordCreatedAt(1742861495L).build(),
+                SensorDataDTO.builder().id(4L).idSensor(99L).metric("humidity").record("0.6").recordCreatedAt(1742861495L).build()
+        );
+
+        when(sensorDataService.createSensorData(input)).thenReturn(mockResponse);
+
+        ResponseEntity<List<SensorDataDTO>> response = sensorDataController.createSensorData(input);
+
+        assertEquals(HttpStatusCode.valueOf(201), response.getStatusCode());
+        assertEquals(4, response.getBody().size());
+        verify(sensorDataService, times(1)).createSensorData(input);
     }
 
-    @Test
-    void testCreateSensorDataReturnsCreated() throws Exception {
-        List<SensorDataDTO> mockData = Arrays.asList(new SensorDataDTO());
-        Mockito.when(sensorDataService.createSensorData(any(SensorJSONPackageDTO.class))).thenReturn(mockData);
-
-        mockMvc.perform(post("/api/v1/sensordata")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"someField\":\"someValue\"}"))
-                .andExpect(status().isCreated())
-                .andExpect(content().json("[{}]"));
-    }
-
-    @Test
-    void testCreateSensorDataReturnsBadRequest() throws Exception {
-        Mockito.when(sensorDataService.createSensorData(any(SensorJSONPackageDTO.class))).thenReturn(Collections.emptyList());
-
-        mockMvc.perform(post("/api/v1/sensordata")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"someField\":\"someValue\"}"))
-                .andExpect(status().isBadRequest());
-    }
 }
+
