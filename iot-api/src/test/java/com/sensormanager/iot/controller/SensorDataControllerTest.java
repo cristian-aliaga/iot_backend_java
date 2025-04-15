@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sensormanager.iot.dto.SensorDataDTO;
 import com.sensormanager.iot.dto.SensorJSONPackageDTO;
@@ -78,6 +80,62 @@ class SensorDataControllerTest {
         assertEquals(4, response.getBody().size());
         verify(sensorDataService, times(1)).createSensorData(input);
     }
+
+    @Test
+    void testCreateSensorData_ReturnsBadRequest() {
+        SensorJSONPackageDTO invalidInput = SensorJSONPackageDTO.builder()
+                .apiKey("invalid-api-key")
+                .jsonData(List.of()) // sin datos válidos
+                .build();
+
+        when(sensorDataService.createSensorData(invalidInput))
+                .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "No valid sensor data found."));
+
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> sensorDataController.createSensorData(invalidInput)
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("No valid sensor data found.", exception.getReason());
+    }
+
+    @Test
+    void testGetSensorData_ReturnsForbidden() {
+        List<Long> sensorIds = List.of(1L);
+        Long fromEpoch = 1742861430L;
+        Long toEpoch = 1742861495L;
+
+        when(sensorDataService.getSensorData(sensorIds, fromEpoch, toEpoch))
+                .thenThrow(new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied."));
+
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> sensorDataController.getSensorData(sensorIds, fromEpoch, toEpoch)
+        );
+
+        assertEquals(HttpStatus.FORBIDDEN, exception.getStatusCode());
+        assertEquals("Access denied.", exception.getReason());
+    }
+
+    @Test
+    void testGetSensorData_ReturnsUnauthorized() {
+        List<Long> sensorIds = List.of(1L);
+        Long fromEpoch = 1742861430L;
+        Long toEpoch = 1742861495L;
+
+        when(sensorDataService.getSensorData(sensorIds, fromEpoch, toEpoch))
+                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authenticated."));
+
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> sensorDataController.getSensorData(sensorIds, fromEpoch, toEpoch)
+        );
+
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
+        assertEquals("You are not authenticated.", exception.getReason());
+    }
+
 
 }
 
