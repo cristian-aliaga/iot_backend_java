@@ -8,6 +8,7 @@ D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-ja
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\camel\ActiveMQSensorDataProcess.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\camel\ActiveMQSensorRoute.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\config\GlobalExceptionHandler.java
+D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\config\OpenApiConfig.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\config\SecurityConfig.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\controller\CompanyController.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\controller\LocationController.java
@@ -33,6 +34,7 @@ D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-ja
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\model\SensorData.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\model\User.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\model\UserRole.java
+D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\model\UserRoleId.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\repository\CompanyRepository.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\repository\LocationRepository.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\repository\RoleRepository.java
@@ -50,10 +52,10 @@ D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-ja
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\LocationServiceImp.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\RoleService.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\RoleServiceImp.java
+D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\SensorDataService.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\SensorDataServiceImp.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\SensorService.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\SensorServiceImp.java
-D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\SersorDataService.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\UserDetailsServiceImp.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\UserRoleService.java
 D:\Cursos\Java\3.- Evaluaciones\Evaluación Final\talentofuturo\capitalhumano-javabackend\iot-api\src\main\java\com\sensormanager\iot\service\UserRoleServiceImp.java
