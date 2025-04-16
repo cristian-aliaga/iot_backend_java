@@ -6,4 +6,3 @@ com\sensormanager\iot\adapter\UserDataAdapterTest.class
 com\sensormanager\iot\controller\UserControllerTest.class
 com\sensormanager\iot\controller\RoleControllerTest.class
 com\sensormanager\iot\controller\SensorDataControllerTest.class
-com\sensormanager\iot\IotApiApplicationTests.class
